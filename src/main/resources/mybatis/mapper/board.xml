@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.BoardMapper">
+
+<select id = "getContentList" parameterType = "com.example.demo.dto.BoardDto" resultType = "com.example.demo.dto.BoardDto">
+
+	select
+		ct.content_no as 'contentNo'
+		,ct.title as 'title'
+        ,ct.hit as 'hit'
+        ,DATE_FORMAT(ct.regdate, '%x-%m-%d') as 'regdate'
+        ,ct.user_no as 'userNo'
+        ,us.user_name as 'userName'
+	from
+		board_contents as ct
+	left join
+		board_users as us
+	on
+		ct.user_no = us.user_no
+	
+	<if test="searchCategory == 1 and searchKeyword != null and searchKeyword != ''">
+		WHERE CT.TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	<if test="searchCategory == 2 and searchKeyword != null and searchKeyword != ''">
+		WHERE US.USER_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	<if test="searchCategory == 3 and searchKeyword != null and searchKeyword != ''">
+		WHERE CT.CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	order by
+		ct.regdate desc
+	
+	limit
+		#{contentLength}
+	offset
+		#{startNo}
+
+</select>
+
+<insert id = "write" parameterType = "com.example.demo.dto.BoardDto">
+
+	insert into
+		board_contents
+	set
+		title = #{title}
+		,contents = #{content}
+		,hit = 0
+		,user_no = #{userNo}
+
+</insert>
+
+<select id = "readContent" parameterType = "int" resultType = "com.example.demo.dto.BoardDto">
+
+	select
+		ct.content_no as 'contentNo'
+		,ct.title as 'title'
+        ,ct.hit as 'hit'
+        ,ct.contents as 'content'
+        ,DATE_FORMAT(ct.regdate, '%x-%m-%d') as 'regdate'
+        ,ct.user_no as 'userNo'
+        ,us.user_name as 'userName'
+	from
+		board_contents as ct
+	left join
+		board_users as us
+	on
+		ct.user_no = us.user_no
+	where
+		ct.content_no = #{contentNo}
+
+</select>
+
+<update id = "increaseHit" parameterType = "int">
+
+	update
+		board_contents
+	set
+		hit = hit + 1
+	where
+		content_no = #{contentNo}
+
+</update>
+
+<update id = "edit" parameterType = "com.example.demo.dto.BoardDto">
+	
+	update
+		board_contents
+	set
+		title = #{title}
+	    ,contents = #{content}
+	    ,regdate = now()
+	where
+		content_no = #{contentNo}
+	and
+		user_no = #{userNo}
+
+</update>
+
+
+<delete id = "delete" parameterType = "int">
+		
+	delete from
+		board_contents
+	where
+		content_no = #{contentNo}
+
+</delete>
+
+<select id = "getListTotalCount" resultType = "int">
+
+	select
+		count(*)
+	from
+		board_contents ct
+	left join
+		board_users us
+	on
+		ct.user_no = us.user_no
+		
+	<if test="searchCategory == 1 and searchKeyword != null and searchKeyword != ''">
+		WHERE CT.TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	<if test="searchCategory == 2 and searchKeyword != null and searchKeyword != ''">
+		WHERE US.USER_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	<if test="searchCategory == 3 and searchKeyword != null and searchKeyword != ''">
+		WHERE CT.CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+
+</select>
+
+<select id = "previousPage" parameterType = "com.example.demo.dto.BoardDto" resultType = "int">
+	<![CDATA[
+		SELECT
+			IFNULL(MIN(content_no), -1) AS contentNo
+		FROM
+			board_contents
+		WHERE
+			content_no > #{contentNo}
+		ORDER BY
+			regdate desc
+	]]>
+	
+	<if test="searchCategory == 1">
+		AND CONTENT_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	<if test="searchCategory == 2">
+		AND CONTENT_USER_NO = #{userNo}
+	</if>
+	<if test="searchCategory == 3">
+		AND CONTENT_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+		
+</select>
+
+
+<select id = "nextPage" parameterType = "com.example.demo.dto.BoardDto" resultType = "int">
+	
+	<![CDATA[
+		SELECT
+			IFNULL(MAX(content_no), -1) AS contentNo
+		FROM
+			board_contents
+		WHERE
+			content_no < #{contentNo}
+		ORDER BY
+			regdate desc
+	]]>
+
+	<if test="searchCategory == 1">
+		AND CONTENT_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	<if test="searchCategory == 2">
+		AND CONTENT_USER_NO = #{userNo}
+	</if>
+	<if test="searchCategory == 3">
+		AND CONTENT_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+
+</select>
+
+
+
+</mapper>

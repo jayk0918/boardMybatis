@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+#content{
+	width : 900px;
+}
+
+#board{
+	margin-top : 30px;
+}
+
+.btn{
+	float : right;
+	border : 1px solid #000000;
+	margin-left : 10px;
+	font-size : 14px;
+	background-color : #DDDDDD;
+}
+
+.btn:hover{
+	color: #000000;
+    background-color: #DDDDDD;
+    border-color: #000000;
+    text-decoration : none;
+}
+
+#deletion{
+	background-color: #f2114c;
+	color : white;
+}
+
+#edit{
+	background-color : #ffc107;
+}
+
+#returnList{
+	background-color : #007bff;
+	color : white;
+}
+
+.imgView{
+	display : flex;
+	justify-content : center;
+}
+
+.imgView > img{
+	width : 400px;
+	height : 300px;
+}
+
+#buttons{
+	margin-top : 50px;
+}
+
+#paging > a:first-of-type{
+	float : left;
+	background-color : sliver;
+}
+
+#paging > a:last-of-type{
+	float : left;
+	background-color : lime;
+}
+
+#reply{
+	width : 800px;
+	height : 35px;
+}
+
+input::placeholder{
+	font-size : 15px;
+	text-align : center;
+}
+
+#replySubmit{
+	background-color : #cbf77b;
+}
+
+#replyList{
+	margin-top : 50px;
+}
+
+#replyList > table{
+	width : 900px;
+	font-size : 12px;
+}
+
+#replyList > table > tbody > tr > td:last-of-type{
+	text-align : right;
+}
+
+#replyList > table > tbody > tr > td > button{
+	width: 40px;
+	height : 25px;
+	background-color : #f2114c;
+	color : white;
+	border : 1px solid #000000;
+	border-radius : 5px;
+}
+
+.replyRead{
+	margin-top : 10px;
+	margin-bottom : 10px;
+	padding : 10px;
+}

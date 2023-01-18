@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+#userIdentity{
+	float : left;
+	font-size : 14px;
+}
+
+#userIdentity>p{
+	margin-bottom : 10px;
+}
+
+#upperMenu{
+	margin-top : 30px;
+	margin-bottom : 30px;
+}
+
+#totalCount{
+	font-size : 14px;
+	display : flex;
+}
+
+#totalCount > p{
+	margin-left : -192px;
+	margin-bottom : 0px;
+}
+
+#returnHome{
+	margin-left : -2px;
+}
+
+#search{
+	float: right;
+	margin-bottom : 20px;
+	font-size : 14px;
+}
+
+#search > button{
+	margin-top : -4px;
+}
+
+.btn{
+	border : 1px solid #000000;
+	margin-left : 10px;
+	font-size : 14px;
+	background-color : #DDDDDD;
+}
+
+.btn:hover{
+	color: #000000;
+    background-color: #DDDDDD;
+    border-color: #000000;
+    text-decoration : none;
+}
+
+.table-bordered{
+	margin-bottom : 10px;
+	table-layout : fixed;
+	font-size : 14px;
+}
+
+
+#searchCategory{
+	width : 100px;
+	height : 35px;
+	text-align : center;
+}
+
+#searchKeyword{
+	height: 35px;
+	padding-left : 10px;
+	margin-left : 5px;
+	margin-right : -5px;
+}
+
+#btn_add{
+	background-color : #cbf77b;
+	float : right;
+}
+
+#initialization{
+	float : right;
+	margin-left : -10px;
+}
+
+#pagination{
+	display: flex;
+	justify-content: center;
+	margin-top: -36px;
+	margin-left: 50px;
+}
