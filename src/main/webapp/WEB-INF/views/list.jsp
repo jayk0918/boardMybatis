@@ -34,8 +34,11 @@
 								<option value='3'>내용</option>
 							</select>
 							<input id = "searchKeyword" type= "text" name = "searchKeyword">
+							<!-- 기존 검색된 파라미터값 저장태그 -->
 							<button type = "submit" class = "btn">검색</button>
 						</form>
+						<input id = "searchedCategory" name = "searchedCategory" type = "hidden" value = "${searchedCategory}">
+						<input id = "searchedKeyword" name = "searchedKeyword" type = "hidden" value = "${searchedKeyword}">
 						
 						<br>
 						
@@ -46,10 +49,6 @@
 					</div>
 					
 					<div id="list">
-						<!-- 기존 검색된 파라미터값 저장태그 -->
-						<input id = "searchedCategory" name = "searchedCategory" type = "hidden" value = "${searchVO.searchedCategory}">
-						<input id = "searchedKeyword" name = "searchedKeyword" type = "hidden" value = "${searchVO.searchedKeyword}">
-						
 						<!-- 리스트 table -->
 						<table class = "table-bordered">
 							<thead>
@@ -83,6 +82,30 @@
 				<!-- //board -->
 			</div>
 			
+			<div id="paginationBox">
+				<ul class="pagination">
+					<c:if test="${pagination.prev}">
+						<li class="page-item">
+							<a class="page-link" href="#" onClick="fn_prev('${pagination.page}', '${pagination.range}', '${pagination.rangeSize}')">Previous</a>
+						</li>
+					</c:if>
+		
+					<c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="idx">
+						<li class="page-item <c:out value="${pagination.page == idx ? 'active' : ''}"/> ">
+							<a class="page-link" href="#" onClick="fn_pagination('${idx}', '${pagination.range}', '${pagination.rangeSize}')"> ${idx} </a>
+						</li>
+					</c:forEach>
+		
+					<c:if test="${pagination.next}">
+						<li class="page-item">
+							<a class="page-link" href="#" onClick="fn_next('${pagination.range}', 
+							'${pagination.range}', '${pagination.rangeSize}')" >Next</a>
+						</li>
+					</c:if>
+				</ul>
+			</div>
+			
+			<!--  
 			<nav aria-label="Page navigation example">
 				<div id = "pagination">
 					<ul class= "pagination">
@@ -94,7 +117,7 @@
 					</ul>
 				</div>
 			</nav>
-			
+			-->
 			<!-- pagination -->
 			
 			<!-- //content  -->
@@ -103,7 +126,7 @@
 	</div>
 	<!-- //wrap -->
 </body>
-
+<c:import url = "/WEB-INF/views/includes/sessionValue.jsp"></c:import>
 <script type = "text/javascript">
 
 /*** 검색 값 없을 시 form 처리 방지, 내용 입력 alert ***/
@@ -113,8 +136,53 @@ $("#search").on("submit", function(event){
 		alert("내용을 입력해주세요");
 		event.preventDefault();
 	}
+	
+	var searchedCategory = $("#searchedCategory").val();
+	var searchedKeyword = $("#searchedKeyword").val();
+	
+	if(searchedCategory != 0){
+		$("searchedCategory").val();
+	}
+	
 });
 
+
+// pagination
+// 이전 버튼 이벤트
+
+function fn_prev(page, range, rangeSize) {
+	var page = ((range - 2) * rangeSize) + 1;
+	var range = range - 1;
+	var url = "${pageContext.request.contextPath}/board/list";
+	
+	url = url + "?page=" + page;
+	url = url + "&range=" + range;
+	location.href = url;
+}
+
+// 페이지 번호 클릭
+function fn_pagination(page, range, rangeSize, searchType, keyword) {
+	var url = "${pageContext.request.contextPath}/board/list";
+	url = url + "?page=" + page;
+	url = url + "&range=" + range;
+	url = url + "&searchCategory=" + document.getElementById("searchedCategory").value;
+	url = url + "&searchKeyword=" + document.getElementById("searchedKeyword").value;
+
+	location.href = url;	
+
+}
+
+//다음 버튼 이벤트
+function fn_next(page, range, rangeSize) {
+	var page = parseInt((range * rangeSize)) + 1;
+	var range = parseInt(range) + 1;
+	var url = "${pageContext.request.contextPath}/board/list";
+
+	url = url + "?page=" + page;
+	url = url + "&range=" + range;
+
+	location.href = url;
+}
 
 </script>
 

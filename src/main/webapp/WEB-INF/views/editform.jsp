@@ -51,5 +51,5 @@
 	</div>
 	<!-- //wrap -->
 </body>
-
+<c:import url = "/WEB-INF/views/includes/sessionValue.jsp"></c:import>
 </html>

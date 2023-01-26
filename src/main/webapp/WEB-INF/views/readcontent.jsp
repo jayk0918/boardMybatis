@@ -89,7 +89,7 @@
 	</div>
 	<!-- //wrap -->
 </body>
-
+<c:import url = "/WEB-INF/views/includes/sessionValue.jsp"></c:import>
 <script type = "text/javascript">
 
 $("#previousPage").on("click", function(){

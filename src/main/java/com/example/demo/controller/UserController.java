@@ -44,6 +44,7 @@ public class UserController {
 		
 		if(authUser != null) {
 			verify = true;
+			session.setMaxInactiveInterval(300);
 			session.setAttribute("authUser", authUser);
 			mv.setViewName("redirect:/board/list");
 		}else {

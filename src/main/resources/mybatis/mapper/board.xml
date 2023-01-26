@@ -36,9 +36,38 @@
 		ct.regdate desc
 	
 	limit
+		#{startList},
+		#{listSize}
+	<!-- 
+	limit
 		#{contentLength}
 	offset
 		#{startNo}
+	 -->
+</select>
+
+<select id = "getListTotalCount" parameterType = "com.example.demo.dto.BoardDto" resultType = "int">
+
+	select
+		count(*)
+	from
+		board_contents ct
+	left join
+		board_users us
+	on
+		ct.user_no = us.user_no
+		
+	<if test="searchCategory == 1 and searchKeyword != null and searchKeyword != ''">
+		WHERE CT.TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	<if test="searchCategory == 2 and searchKeyword != null and searchKeyword != ''">
+		WHERE US.USER_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
+	
+	<if test="searchCategory == 3 and searchKeyword != null and searchKeyword != ''">
+		WHERE CT.CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
+	</if>
 
 </select>
 
@@ -110,31 +139,6 @@
 		content_no = #{contentNo}
 
 </delete>
-
-<select id = "getListTotalCount" resultType = "int">
-
-	select
-		count(*)
-	from
-		board_contents ct
-	left join
-		board_users us
-	on
-		ct.user_no = us.user_no
-		
-	<if test="searchCategory == 1 and searchKeyword != null and searchKeyword != ''">
-		WHERE CT.TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
-	</if>
-	
-	<if test="searchCategory == 2 and searchKeyword != null and searchKeyword != ''">
-		WHERE US.USER_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
-	</if>
-	
-	<if test="searchCategory == 3 and searchKeyword != null and searchKeyword != ''">
-		WHERE CT.CONTENTS LIKE CONCAT('%', #{searchKeyword}, '%')
-	</if>
-
-</select>
 
 <select id = "previousPage" parameterType = "com.example.demo.dto.BoardDto" resultType = "int">
 	<![CDATA[

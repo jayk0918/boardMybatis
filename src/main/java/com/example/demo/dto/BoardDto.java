@@ -36,9 +36,10 @@ public class BoardDto {
 	private int nextPage;
 	
 	// pagination
-	private int contentLength = 8;
-	private int totalPage;
-	private int pageNo = 1;
-	private int startNo = 0;
+	private int startList;
+	private int listSize;
+	//private int totalPage;
+	//private int pageNo = 1;
+	
 	
 }

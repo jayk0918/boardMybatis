@@ -21,7 +21,7 @@ public interface BoardMapper {
 	
 	int delete(int contentNo);
 	
-	int getListTotalCount();
+	int getListTotalCount(BoardDto dto);
 	
 	int previousPage(BoardDto dto);
 	

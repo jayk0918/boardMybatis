@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.config.Pagination;
 import com.example.demo.dto.BoardDto;
 import com.example.demo.mapper.BoardMapper;
 
@@ -16,8 +17,24 @@ public class BoardService {
 		this.boardMapper = boardMapper;
 	}
 
-	public List<BoardDto> getContentList(BoardDto dto){
+	public List<BoardDto> getContentList(BoardDto dto, Pagination pagination){
 		
+		int startList = pagination.getStartList();
+		int listSize = pagination.getListSize();
+		/*
+		if(startList < 10) {
+			dto.setStartList(0);
+		}else {
+			dto.setStartList(startList);
+		}
+		*/
+		
+		dto.setStartList(startList);
+		dto.setListSize(listSize);
+		
+		return boardMapper.getContentList(dto);
+		
+		/*
 		int pageNo = dto.getPageNo();
 		
 		if(pageNo == 1) {
@@ -28,6 +45,7 @@ public class BoardService {
 			dto.setStartNo(newStartNo);
 			return boardMapper.getContentList(dto);
 		}
+		*/
 	}
 	
 	public int write(BoardDto dto) {
@@ -58,8 +76,8 @@ public class BoardService {
 		return boardMapper.delete(contentNo);
 	}
 	
-	public int getListTotalCount() {
-		return boardMapper.getListTotalCount();
+	public int getListTotalCount(BoardDto dto) {
+		return boardMapper.getListTotalCount(dto);
 	}
 	
 	
