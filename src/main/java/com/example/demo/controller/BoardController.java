@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,46 +40,47 @@ public class BoardController {
 		// pagination
 		int totalCount = boardService.getListTotalCount(dto);
 		Pagination pagination = new Pagination();
-		pagination.pageInfo(page, range, totalCount);
-		
-		/*
-		int totalCount = boardService.getListTotalCount();
-		int contentLength = dto.getContentLength();
-		int totalPage = (totalCount / contentLength);
-		
-		if(totalCount % contentLength != 0) {
-			totalPage++;
-		}
-		*/
 		
 		////////////검색 business logic ////////////
-		// 새로운 BoardDto 객체를 선언하여 해당 객체에 검색되었던 카테고리 및 키워드를 저장함 //
-		BoardDto searchDto = new BoardDto();
-		int beforeCategory = dto.getSearchCategory();
-		String beforeKeyword = dto.getSearchKeyword();
+		int categoryCheck = dto.getSearchCategory(); // 검색 카테고리
+		String keywordCheck = dto.getSearchKeyword(); // 검색 키워드
+		int beforeCategory = dto.getSearchedCategory(); // 이전 검색 카테고리
+		String beforeKeyword = dto.getSearchedKeyword(); // 이전 검색 키워드
 		
-		searchDto.setSearchedCategory(beforeCategory);
-		searchDto.setSearchedKeyword(beforeKeyword);
+		// 분기 1. 최초 검색 시 category가 0이면 전체 리스트 or 검색값이 이미 존재함
+		if(categoryCheck == 0) {
+			
+			// 분기 1-1. 검색값이 없을 경우
+			if(beforeCategory == 0 && beforeKeyword == null) {
+				pagination.pageInfo(page, range, totalCount);
+			
+			// 분기 1-2. 기존 검색값이 존재할 경우
+			}else {
+				dto.setSearchCategory(beforeCategory);
+				dto.setSearchKeyword(beforeKeyword);
+				pagination.pageInfo(page, range, totalCount);
+			}
 		
-		// 검색되었던 카테고리와 키워드를 검증하여 기존에 검색되었떤 값이 존재한다면 검색 키워드로 재설정 (페이징 시 검색값 유지) //
-		int categoryCheck = dto.getSearchedCategory();
-		String keywordCheck = dto.getSearchedKeyword();
-		
-		if(categoryCheck != 0 && keywordCheck != null) {
-			searchDto.setSearchCategory(categoryCheck);
-			searchDto.setSearchKeyword(keywordCheck);
+		// 분기 2. 검색을 했을 경우
+		}else {
+			dto.setSearchedCategory(categoryCheck);
+			dto.setSearchedKeyword(keywordCheck);
+			pagination.pageInfo(page, range, totalCount);
 		}
 		
-		int searchedCategory = searchDto.getSearchedCategory();
-		String searchedKeyword = searchDto.getSearchedKeyword();
+		// 검색이 완료된 후 검색값을 저장하기 위한 변수
+		int saveCategory = dto.getSearchedCategory();
+		String saveKeyword = dto.getSearchedKeyword();
+		
+		List<BoardDto> list = boardService.getContentList(dto, pagination);
 		
 		ModelAndView mv = new ModelAndView("/list");
 		mv.addObject("authUser", authUser(session));
-		mv.addObject("list", boardService.getContentList(searchDto, pagination));
+		mv.addObject("list", list);
 		mv.addObject("pagination", pagination);
 		mv.addObject("totalCount", totalCount);
-		mv.addObject("searchedCategory", searchedCategory);
-		mv.addObject("searchedKeyword", searchedKeyword);
+		mv.addObject("searchedCategory", saveCategory);
+		mv.addObject("searchedKeyword", saveKeyword);
 		//mv.addObject("totalPage", totalPage);
 		
 		return mv;

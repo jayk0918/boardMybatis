@@ -131,21 +131,18 @@
 
 /*** 검색 값 없을 시 form 처리 방지, 내용 입력 alert ***/
 $("#search").on("submit", function(event){
+	var category = $("#searchCategory").val();
 	var keyword = $("#searchKeyword").val();
-	if(keyword == ""){
+	
+	if(category == 0){
+		alert("검색 범주를 선택해주세요");
+		event.preventDefault();
+		
+	}else if(keyword == ""){
 		alert("내용을 입력해주세요");
 		event.preventDefault();
 	}
-	
-	var searchedCategory = $("#searchedCategory").val();
-	var searchedKeyword = $("#searchedKeyword").val();
-	
-	if(searchedCategory != 0){
-		$("searchedCategory").val();
-	}
-	
 });
-
 
 // pagination
 // 이전 버튼 이벤트
@@ -154,15 +151,21 @@ function fn_prev(page, range, rangeSize) {
 	var page = ((range - 2) * rangeSize) + 1;
 	var range = range - 1;
 	var url = "${pageContext.request.contextPath}/board/list";
+	var searchedCategory = document.getElementById("searchedCategory");
+	var searchedKeyword = document.getElementById("searchedKeyword");
 	
 	url = url + "?page=" + page;
 	url = url + "&range=" + range;
+	url = url + "&searchCategory=" + searchedCategory;
+	url = url + "&searchKeyword=" + searchedKeyword;
+	
 	location.href = url;
 }
 
 // 페이지 번호 클릭
 function fn_pagination(page, range, rangeSize, searchType, keyword) {
 	var url = "${pageContext.request.contextPath}/board/list";
+	
 	url = url + "?page=" + page;
 	url = url + "&range=" + range;
 	url = url + "&searchCategory=" + document.getElementById("searchedCategory").value;
@@ -178,8 +181,13 @@ function fn_next(page, range, rangeSize) {
 	var range = parseInt(range) + 1;
 	var url = "${pageContext.request.contextPath}/board/list";
 
+	var searchedCategory = document.getElementById("searchedCategory");
+	var searchedKeyword = document.getElementById("searchedKeyword");
+	
 	url = url + "?page=" + page;
 	url = url + "&range=" + range;
+	url = url + "&searchCategory=" + searchedCategory;
+	url = url + "&searchKeyword=" + searchedKeyword;
 
 	location.href = url;
 }

@@ -7,9 +7,9 @@ import com.example.demo.dto.UserDto;
 @Mapper
 public interface UserMapper {
 	
-	public UserDto userCheck(UserDto userInfo);
+	UserDto userCheck(UserDto userInfo);
 	
-	public int idCheck(String userId);
+	int idCheck(String userId);
 	
-	public int userJoin(UserDto userInfo);
+	int userJoin(UserDto userInfo);
 }

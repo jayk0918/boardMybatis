@@ -21,31 +21,10 @@ public class BoardService {
 		
 		int startList = pagination.getStartList();
 		int listSize = pagination.getListSize();
-		/*
-		if(startList < 10) {
-			dto.setStartList(0);
-		}else {
-			dto.setStartList(startList);
-		}
-		*/
-		
 		dto.setStartList(startList);
 		dto.setListSize(listSize);
 		
 		return boardMapper.getContentList(dto);
-		
-		/*
-		int pageNo = dto.getPageNo();
-		
-		if(pageNo == 1) {
-			return boardMapper.getContentList(dto);
-		}else {
-			int contentLength = dto.getContentLength();
-			int newStartNo = (pageNo * contentLength) - contentLength;
-			dto.setStartNo(newStartNo);
-			return boardMapper.getContentList(dto);
-		}
-		*/
 	}
 	
 	public int write(BoardDto dto) {

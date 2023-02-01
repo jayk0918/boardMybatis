@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pagination {
-	private int listSize = 8;             
-	private int rangeSize = 10;            
+	private int listSize = 8;       // 한 페이지당 보여질 리스트의 개수       
+	private int rangeSize = 10;     // 한 페이지 범위에 보여질 페이지의 개수 
 	private int page;
 	private int range;
 	private int listCnt;

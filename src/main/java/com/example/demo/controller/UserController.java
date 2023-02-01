@@ -38,6 +38,7 @@ public class UserController {
 	@SuppressWarnings("unused")
 	public ModelAndView login(HttpSession session,
 						@ModelAttribute UserDto dto) throws Exception {
+		
 		UserDto authUser = userService.userCheck(dto);
 		Boolean verify = false;
 		ModelAndView mv = new ModelAndView();
