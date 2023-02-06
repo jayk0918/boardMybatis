@@ -1,13 +1,5 @@
 package com.example.demo.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-
-@Configuration
-@EnableWebSecurity
 public class WebSecurityConfig {
 	/*
 	@Bean 
@@ -33,7 +25,7 @@ public class WebSecurityConfig {
         	new InMemoryUserDetailsManager(user1, user2, admin);
     }
 	*/
-	
+	/*
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	http
@@ -57,9 +49,10 @@ public class WebSecurityConfig {
 			.invalidateHttpSession(true)
 			.logoutSuccessUrl("/")
 		*/
+	/*
 		;
         return http.build();
-    }
+    }*/
     /*
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
